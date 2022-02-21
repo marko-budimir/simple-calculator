@@ -44,7 +44,22 @@ class MainActivity : AppCompatActivity() {
                         val splitValue = tvValue.split("-")
                         var firstNumber: String = prefix + splitValue[0]
                         var secondNumber: String = splitValue[1]
-                        tvResult?.text = (firstNumber.toDouble() - secondNumber.toDouble()).toString()
+                        tvResult?.text = removeZeroAfterDot((firstNumber.toDouble() - secondNumber.toDouble()).toString())
+                    }else if(tvValue.contains("+")){
+                        val splitValue = tvValue.split("+")
+                        var firstNumber: String = prefix + splitValue[0]
+                        var secondNumber: String = splitValue[1]
+                        tvResult?.text = removeZeroAfterDot((firstNumber.toDouble() + secondNumber.toDouble()).toString())
+                    }else if(tvValue.contains("*")){
+                        val splitValue = tvValue.split("*")
+                        var firstNumber: String = prefix + splitValue[0]
+                        var secondNumber: String = splitValue[1]
+                        tvResult?.text = removeZeroAfterDot((firstNumber.toDouble() * secondNumber.toDouble()).toString())
+                    }else if(tvValue.contains("/")){
+                        val splitValue = tvValue.split("/")
+                        var firstNumber: String = prefix + splitValue[0]
+                        var secondNumber: String = splitValue[1]
+                        tvResult?.text = removeZeroAfterDot((firstNumber.toDouble() / secondNumber.toDouble()).toString())
                     }
 
                 }catch (e: ArithmeticException){
@@ -60,6 +75,14 @@ class MainActivity : AppCompatActivity() {
                 lastDot = true
             }
         }
+    }
+
+    private fun removeZeroAfterDot(result: String) : String{
+        var value = result
+        if(result.endsWith(".0"))
+            value = result.substring(0, result.length - 2)
+
+        return value
     }
 
     fun onDigit(view: View){
