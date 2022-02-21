@@ -6,10 +6,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import java.lang.ArithmeticException
 
 class MainActivity : AppCompatActivity() {
     private var tvResult: TextView? = null
     private var btnClear : Button? = null
+    private var btnEqual : Button? = null
     private var btnDecimalPoint: Button? = null
     private var lastNumeric : Boolean = false
     private var lastDot : Boolean = false
@@ -20,13 +22,35 @@ class MainActivity : AppCompatActivity() {
 
         tvResult = findViewById(R.id.tvResult)
         btnClear = findViewById(R.id.btnClear)
-
+        btnEqual = findViewById(R.id.btnEqual)
         btnDecimalPoint = findViewById(R.id.btnDot)
 
         btnClear?.setOnClickListener {
             tvResult?.text = ""
             lastNumeric = false
             lastDot = false
+        }
+
+        btnEqual?.setOnClickListener {
+            if(lastNumeric){
+                var tvValue = tvResult?.text.toString()
+                var prefix = ""
+                try {
+                    if(tvValue.startsWith("-")){
+                        prefix = "-"
+                        tvValue = tvValue.substring(1)
+                    }
+                    if(tvValue.contains("-")){
+                        val splitValue = tvValue.split("-")
+                        var firstNumber: String = prefix + splitValue[0]
+                        var secondNumber: String = splitValue[1]
+                        tvResult?.text = (firstNumber.toDouble() - secondNumber.toDouble()).toString()
+                    }
+
+                }catch (e: ArithmeticException){
+                    e.printStackTrace()
+                }
+            }
         }
 
         btnDecimalPoint?.setOnClickListener {
