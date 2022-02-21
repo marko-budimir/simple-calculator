@@ -10,11 +10,6 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
     private var tvResult: TextView? = null
     private var btnClear : Button? = null
-    private var btnAdd : Button? = null
-    private var btnSubtract : Button? = null
-    private var btnMultiply: Button? = null
-    private var btnDivide: Button? = null
-    private var btnEqual: Button? = null
     private var btnDecimalPoint: Button? = null
     private var lastNumeric : Boolean = false
     private var lastDot : Boolean = false
@@ -25,33 +20,13 @@ class MainActivity : AppCompatActivity() {
 
         tvResult = findViewById(R.id.tvResult)
         btnClear = findViewById(R.id.btnClear)
-        btnAdd = findViewById(R.id.btnAdd)
-        btnSubtract = findViewById(R.id.btnSubtract)
-        btnMultiply = findViewById(R.id.btnMultiply)
-        btnDivide = findViewById(R.id.btnDivide)
-        btnEqual = findViewById(R.id.btnEqual)
+
         btnDecimalPoint = findViewById(R.id.btnDot)
 
         btnClear?.setOnClickListener {
             tvResult?.text = ""
             lastNumeric = false
             lastDot = false
-        }
-
-        btnAdd?.setOnClickListener {
-
-        }
-
-        btnSubtract?.setOnClickListener {
-
-        }
-
-        btnMultiply?.setOnClickListener {
-
-        }
-
-        btnDivide?.setOnClickListener {
-
         }
 
         btnDecimalPoint?.setOnClickListener {
@@ -68,7 +43,25 @@ class MainActivity : AppCompatActivity() {
         lastNumeric = true
     }
 
+    fun onOperator(view: View) {
+        tvResult?.text?.let {
+            if (lastNumeric && !isOperatorAdded(it.toString())){
+                tvResult?.append((view as Button).text)
+                lastNumeric = false
+                lastDot = false
+            }
+        }
+    }
 
-
+    private fun isOperatorAdded(value : String): Boolean {
+        return if(value.startsWith("-")){
+            false
+        }else{
+            value.contains("/")
+                    || value.contains("*")
+                    || value.contains("+")
+                    || value.contains("-")
+        }
+    }
 
 }
